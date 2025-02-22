@@ -31,5 +31,6 @@ This repository contains files for generating, solving, and evaluating Binary Qu
 ## Running the Program
 To run the complete workflow, simply execute:
 ```bash
+chmod +x main.sh
 ./main.sh
 ```
