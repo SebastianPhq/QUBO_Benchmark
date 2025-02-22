@@ -29,10 +29,11 @@ This repository contains files for generating, solving, and evaluating Binary Qu
 - **uqo_u3_c10.zpl**: The QUBO model file that also includes `parameter_u3_c10.zpl` and defines the objective and constraints for the QUBO optimization, including penalty terms for constraint violations.
 
 ## Running the Program
-To run the complete workflow, simply execute:
+To run the complete workflow, first execute:
 ```bash
 chmod +x main.sh
 ```
+then
 ```bash
 ./main.sh
 ```
