@@ -33,7 +33,7 @@ To run the complete workflow, first execute:
 ```bash
 chmod +x main.sh
 ```
-then
+in the terminal, then execute:
 ```bash
 ./main.sh
 ```
