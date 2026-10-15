@@ -1,0 +1,8 @@
+{
+  "mode": "ibm",
+  "jobs": 41,
+  "shots": 176000,
+  "best_feasible_objective": -6502.576492742006,
+  "best_first_found_in": "round_014",
+  "completed_at_utc": "2026-10-02T14:20:58.182452+00:00"
+}

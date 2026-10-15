@@ -1,0 +1,12 @@
+{
+  "status": "TIME_LIMIT",
+  "objective": -6502.576492742,
+  "lower_bound": -18287.34610837,
+  "gap": 1.8123230000000001,
+  "runtime_seconds": 10000.01,
+  "tts_seconds": 0.06450104713439941,
+  "time_limit_seconds": 10000,
+  "seed": 101,
+  "threads": 1,
+  "gurobi_version": "13.0.3"
+}

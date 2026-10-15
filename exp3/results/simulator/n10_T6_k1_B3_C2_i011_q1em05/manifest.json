@@ -1,0 +1,35 @@
+{
+  "contract": {
+    "mode": "simulator",
+    "backend": null,
+    "config": {
+      "layers": 1,
+      "dgamma": 2.0,
+      "dbeta": -0.6,
+      "rounds": 40,
+      "chains": 4,
+      "shots": 1000,
+      "final_shots": 4000,
+      "elite_fraction": 0.05,
+      "learning_rate": 0.3,
+      "initial_probability": 0.05,
+      "clip": 0.01,
+      "archive": 20,
+      "seed": 101,
+      "max_readout": 0.05,
+      "max_twoq": 0.05,
+      "max_execution_time": 300,
+      "wait_timeout": 900
+    },
+    "instance_fingerprint": "299bfa543e12ff7c1162279191cd77942fc56dc5c57244bf07dfd883700a5a70"
+  },
+  "started_at_utc": "2026-10-14T12:11:33.079253+00:00",
+  "versions": {
+    "numpy": "2.3.5",
+    "scipy": "1.18.1",
+    "qiskit": "2.5.2",
+    "qiskit-ibm-runtime": "0.50.0",
+    "rustworkx": "0.18.1",
+    "gurobipy": "13.0.3"
+  }
+}

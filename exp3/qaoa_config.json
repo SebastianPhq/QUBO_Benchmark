@@ -1,0 +1,19 @@
+{
+  "layers": 1,
+  "dgamma": 2.0,
+  "dbeta": -0.6,
+  "rounds": 40,
+  "chains": 4,
+  "shots": 1000,
+  "final_shots": 4000,
+  "elite_fraction": 0.05,
+  "learning_rate": 0.3,
+  "initial_probability": 0.05,
+  "clip": 0.01,
+  "archive": 20,
+  "seed": 101,
+  "max_readout": 0.05,
+  "max_twoq": 0.05,
+  "max_execution_time": 300,
+  "wait_timeout": 900
+}

@@ -1,0 +1,12 @@
+{
+  "status": "OPTIMAL",
+  "objective": -34217.80114390322,
+  "lower_bound": -34217.80114390322,
+  "gap": 0.0,
+  "runtime_seconds": 0.019251108169555664,
+  "tts_seconds": 0.011239051818847656,
+  "time_limit_seconds": 10000,
+  "seed": 101,
+  "threads": 1,
+  "gurobi_version": "13.0.3"
+}

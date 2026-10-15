@@ -1,0 +1,4 @@
+numpy==2.3.5
+gurobipy==13.0.3            # run_gurobi.py
+qiskit==2.5.2               # run_qaoa.py --mode ibm
+qiskit-ibm-runtime==0.50.0  # run_qaoa.py --mode ibm

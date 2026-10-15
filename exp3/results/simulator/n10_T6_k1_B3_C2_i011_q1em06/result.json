@@ -1,0 +1,8 @@
+{
+  "mode": "simulator",
+  "jobs": 41,
+  "shots": 176000,
+  "best_feasible_objective": -34124.68061249263,
+  "best_first_found_in": "round_006",
+  "completed_at_utc": "2026-10-14T12:11:33.003736+00:00"
+}
