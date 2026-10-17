@@ -1,4 +1,4 @@
-# Exp3: gate-based quantum hardware, Gurobi, and noiseless simulator
+# Exp3: gate-based hardware, Gurobi, and noiseless simulator (Table 6)
 
 Code and data to reproduce Table 6 of the paper: the instance `n10_T6_k1_B3_C2` (10 stocks, 6 holding intervals, 156 binary variables, 120 qubits) for eight risk-aversion levels q, solved by
 
@@ -18,7 +18,7 @@ python make_table.py          # Table 6 from the results in results/
 
 | Path | Content |
 |---|---|
-| `instances/` | The eight instances (prices, covariances, QUBO and BQP matrices). Stocks AXON, ORCL, TDY, MAA, VST, IBM, DFS, ON, FTV, NVR from the Exp2 data in `../exp1_exp2/data/`, starting on its first date. |
+| `instances/` | The eight instances (prices, covariances, QUBO and BQP matrices). Stocks AXON, ORCL, TDY, MAA, VST, IBM, DFS, ON, FTV, NVR from the S&P 500 data of Exp2, starting on its first date. |
 | `portfolio/model.py` | Objective and constraints of the instances |
 | `portfolio/exact.py` | Dynamic programming and Gurobi |
 | `portfolio/qaoa.py` | Bias-field warm-start QAOA (Algorithm 1): simulator and IBM hardware |
@@ -40,7 +40,23 @@ To rerun an experiment, delete its folder in `results/` first (the QAOA script r
 
 - Gurobi 13.0.3 with one thread, seed 101, relative gap tolerance 0, and the all-cash allocation as the only start. The instances are small enough for the size-limited license that comes with `pip install gurobipy`.
 - The simulator samples are deterministic: a rerun returns exactly the same counts. Times depend on the machine.
-- The hardware mode needs an IBM Quantum account: set `IBM_API_KEY` and `IBM_INSTANCE_CRN`. Hardware samples differ from run to run because of noise and calibration; `results/ibm/` contains the runs of the paper (2 October 2026, Qiskit Runtime 0.50, no error mitigation). The seed of each run is recorded in its `manifest.json`.
+- The hardware mode needs your own IBM Quantum account; see the next section.
+
+## Running on IBM hardware
+
+1. Create an account on [IBM Quantum Platform](https://quantum.cloud.ibm.com), create an API key, and copy the CRN (`crn:v1:...`) of an instance that has access to a 156-qubit Heron processor.
+2. Set the credentials and run the experiment. Move the runs of the paper aside first, because the script resumes existing runs:
+   ```bash
+   export IBM_API_KEY=...
+   export IBM_INSTANCE_CRN=...
+   mv results/ibm results/ibm_paper
+   python run_qaoa.py --mode ibm                                   # all eight instances
+   python run_qaoa.py --mode ibm --only n10_T6_k1_B3_C2_i011_q0p01  # or a single instance
+   python make_table.py
+   ```
+3. Each instance submits 41 jobs (176,000 shots) and uses about 126 s of QPU time, so all eight instances need about 17 minutes of QPU time. In our runs, one instance took 9 to 12 minutes of wall-clock time, including queueing. If `ibm_pittsburgh` is not available to your instance, choose another backend with `--backend`.
+
+Qubits are selected from the calibration data of the day, and hardware samples differ from run to run because of noise. `results/ibm_paper/` (originally `results/ibm/`) contains the runs of the paper: 2 October 2026, Qiskit Runtime 0.50, no error mitigation. The seed of each run is recorded in its `manifest.json`.
 
 ## Definitions
 

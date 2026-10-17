@@ -52,11 +52,14 @@ for name, problem in instances():
     optimum = json.loads((res/'dp'/f'{name}.json').read_text())['objective']
     g = json.loads((res/'gurobi'/f'{name}.json').read_text())
     assert abs(g['objective'] - optimum) <= 1e-6 * max(1, abs(optimum)), f'{name}: Gurobi UB differs from DP optimum'
-    hw, hw_first, hw_opt, hw_shots = scan(problem, res/'ibm'/name, optimum)
-    sim, sim_first, sim_opt, sim_shots = scan(problem, res/'simulator'/name, optimum)
-    start = stamp(read_json(res/'simulator'/name/'manifest.json')['started_at_utc'])
-    sim_tts = (stamp(sim[sim_first]['completed_at_utc']) - start).total_seconds()
+    hw_tts = hw_opt = sim_tts = sim_opt = '--'                   # runs that are missing stay empty
+    if (res/'ibm'/name/'result.json').exists():
+        hw, first, opt, _ = scan(problem, res/'ibm'/name, optimum)
+        hw_tts, hw_opt = f'{ibm_tts(hw, first):.0f}', count(opt)
+    if (res/'simulator'/name/'result.json').exists():
+        sim, first, opt, _ = scan(problem, res/'simulator'/name, optimum)
+        start = stamp(read_json(res/'simulator'/name/'manifest.json')['started_at_utc'])
+        sim_tts, sim_opt = f"{(stamp(sim[first]['completed_at_utc']) - start).total_seconds():.2f}", count(opt)
     q = format(problem.spec.q, 'f').rstrip('0').rstrip('.') or '0'
     print(f"{q:8s} & {money(g['lower_bound'])} & {money(g['objective'])} & {100*g['gap']:.2f}\\% & "
-          f"{seconds(g['tts_seconds'])} & {ibm_tts(hw, hw_first):.0f} & {sim_tts:.2f} & "
-          f"{count(hw_opt)} & {count(sim_opt)} \\\\   % shots per run: IBM {hw_shots}, simulator {sim_shots}")
+          f"{seconds(g['tts_seconds'])} & {hw_tts} & {sim_tts} & {hw_opt} & {sim_opt} \\\\")
