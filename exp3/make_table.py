@@ -14,9 +14,13 @@ from portfolio import ROOT, instances
 from portfolio.qaoa import evaluate_counts, read_json
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--results', default=str(ROOT/'results'))
+parser.add_argument('--results', default=str(ROOT/'results'), help='folder with dp/ and gurobi/')
+parser.add_argument('--ibm', help='hardware runs (default: results/ibm, the runs of the paper)')
+parser.add_argument('--simulator', help='simulator runs (default: results/simulator)')
 args = parser.parse_args()
 res = Path(args.results)
+ibm_dir = Path(args.ibm) if args.ibm else res/'ibm'
+sim_dir = Path(args.simulator) if args.simulator else res/'simulator'
 stamp = lambda s: datetime.fromisoformat(s.replace('Z', '+00:00'))
 
 
@@ -53,12 +57,12 @@ for name, problem in instances():
     g = json.loads((res/'gurobi'/f'{name}.json').read_text())
     assert abs(g['objective'] - optimum) <= 1e-6 * max(1, abs(optimum)), f'{name}: Gurobi UB differs from DP optimum'
     hw_tts = hw_opt = sim_tts = sim_opt = '--'                   # runs that are missing stay empty
-    if (res/'ibm'/name/'result.json').exists():
-        hw, first, opt, _ = scan(problem, res/'ibm'/name, optimum)
+    if (ibm_dir/name/'result.json').exists():
+        hw, first, opt, _ = scan(problem, ibm_dir/name, optimum)
         hw_tts, hw_opt = f'{ibm_tts(hw, first):.0f}', count(opt)
-    if (res/'simulator'/name/'result.json').exists():
-        sim, first, opt, _ = scan(problem, res/'simulator'/name, optimum)
-        start = stamp(read_json(res/'simulator'/name/'manifest.json')['started_at_utc'])
+    if (sim_dir/name/'result.json').exists():
+        sim, first, opt, _ = scan(problem, sim_dir/name, optimum)
+        start = stamp(read_json(sim_dir/name/'manifest.json')['started_at_utc'])
         sim_tts, sim_opt = f"{(stamp(sim[first]['completed_at_utc']) - start).total_seconds():.2f}", count(opt)
     q = format(problem.spec.q, 'f').rstrip('0').rstrip('.') or '0'
     print(f"{q:8s} & {money(g['lower_bound'])} & {money(g['objective'])} & {100*g['gap']:.2f}\\% & "

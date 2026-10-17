@@ -23,13 +23,13 @@ python make_table.py          # Table 6 from the results in results/
 | `portfolio/exact.py` | Dynamic programming and Gurobi |
 | `portfolio/qaoa.py` | Bias-field warm-start QAOA (Algorithm 1): simulator and IBM hardware |
 | `qaoa_config.json` | Hyperparameters: one layer, γ = 2, β = −0.6, 4 replicas, 40 rounds of 1,000 shots and a final job of 4,000 shots per replica (176,000 shots per run) |
-| `run_dp.py`, `run_gurobi.py`, `run_qaoa.py` | Experiments; each writes to `results/` |
+| `run_dp.py`, `run_gurobi.py`, `run_qaoa.py` | Experiments; DP and Gurobi write to `results/`, QAOA runs to `runs/` |
 | `make_table.py` | Table 6 from `results/` |
 | `results/` | Results reported in the paper, including the raw counts, job IDs, job metrics, compiled circuits, and calibration snapshots of the hardware runs |
 
 ## Reproducing the columns
 
-To rerun an experiment, delete its folder in `results/` first (the QAOA script resumes existing runs), then run `python make_table.py`.
+New QAOA runs go to `runs/`, so the runs of the paper in `results/` stay untouched. Build the table from new runs with, e.g., `python make_table.py --simulator runs/simulator`.
 
 | Columns | Command | Run time |
 |---|---|---|
@@ -45,18 +45,17 @@ To rerun an experiment, delete its folder in `results/` first (the QAOA script r
 ## Running on IBM hardware
 
 1. Create an account on [IBM Quantum Platform](https://quantum.cloud.ibm.com), create an API key, and copy the CRN (`crn:v1:...`) of an instance that has access to a 156-qubit Heron processor.
-2. Set the credentials and run the experiment. Move the runs of the paper aside first, because the script resumes existing runs:
+2. Set the credentials and run the experiment:
    ```bash
    export IBM_API_KEY=...
    export IBM_INSTANCE_CRN=...
-   mv results/ibm results/ibm_paper
    python run_qaoa.py --mode ibm                                   # all eight instances
    python run_qaoa.py --mode ibm --only n10_T6_k1_B3_C2_i011_q0p01  # or a single instance
-   python make_table.py
+   python make_table.py --ibm runs/ibm
    ```
 3. Each instance submits 41 jobs (176,000 shots) and uses about 126 s of QPU time, so all eight instances need about 17 minutes of QPU time. In our runs, one instance took 9 to 12 minutes of wall-clock time, including queueing. If `ibm_pittsburgh` is not available to your instance, choose another backend with `--backend`.
 
-Qubits are selected from the calibration data of the day, and hardware samples differ from run to run because of noise. `results/ibm/` contains the runs of the paper (renamed to `results/ibm_paper/` in step 2): 2 October 2026, Qiskit Runtime 0.50, no error mitigation. The seed of each run is recorded in its `manifest.json`.
+Qubits are selected from the calibration data of the day, and hardware samples differ from run to run because of noise. `results/ibm/` contains the runs of the paper: 2 October 2026, Qiskit Runtime 0.50, no error mitigation. The seed of each run is recorded in its `manifest.json`.
 
 ## Definitions
 
