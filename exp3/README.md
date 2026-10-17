@@ -56,7 +56,7 @@ To rerun an experiment, delete its folder in `results/` first (the QAOA script r
    ```
 3. Each instance submits 41 jobs (176,000 shots) and uses about 126 s of QPU time, so all eight instances need about 17 minutes of QPU time. In our runs, one instance took 9 to 12 minutes of wall-clock time, including queueing. If `ibm_pittsburgh` is not available to your instance, choose another backend with `--backend`.
 
-Qubits are selected from the calibration data of the day, and hardware samples differ from run to run because of noise. `results/ibm_paper/` (originally `results/ibm/`) contains the runs of the paper: 2 October 2026, Qiskit Runtime 0.50, no error mitigation. The seed of each run is recorded in its `manifest.json`.
+Qubits are selected from the calibration data of the day, and hardware samples differ from run to run because of noise. `results/ibm/` contains the runs of the paper (renamed to `results/ibm_paper/` in step 2): 2 October 2026, Qiskit Runtime 0.50, no error mitigation. The seed of each run is recorded in its `manifest.json`.
 
 ## Definitions
 
